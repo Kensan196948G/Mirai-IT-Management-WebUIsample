@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="ja">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Enterprise AI HelpDesk | WebUI Sample</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Murecho:wght@400;500;700;800&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="./css/styles.css" />
+  </head>
+  <body>
+    <div class="app-shell">
+      <aside class="sidebar">
+        <div class="brand"><div class="brand-icon">H</div><div><p class="brand-title">AI HelpDesk</p><p class="brand-sub">Claude / Gemini / Perplexity</p></div></div>
+        <nav class="nav">
+          <button class="nav-item is-active" data-view="overview">ダッシュボード</button>
+          <button class="nav-item" data-view="conversation">AI会話</button>
+          <button class="nav-item" data-view="pipeline">AIパイプライン</button>
+          <button class="nav-item" data-view="tickets">チケット</button>
+          <button class="nav-item" data-view="faq">FAQ</button>
+          <button class="nav-item" data-view="operations">運用</button>
+          <button class="nav-item" data-view="tests">テスト</button>
+          <button class="nav-item" data-view="settings">システム設定</button>
+        </nav>
+      </aside>
+      <main class="main">
+        <header class="topbar"><div><p class="eyebrow">README ベースの動的サンプル</p><h1 id="pageTitle">ダッシュボード</h1></div><button class="btn primary" id="askDemoBtn">問い合わせデモ</button></header>
+        <section class="hero"><div><p class="eyebrow">3-Stage AI Support</p><h2>社内問い合わせを AI とチケット運用で整理する</h2><p class="lead">会話 UI、AI パイプライン、FAQ、チケット管理、Playwright を含む運用像を再構成しています。</p></div><div class="hero-badges" id="heroBadges"></div></section>
+        <section class="view is-active" id="view-overview"><div class="stats-grid" id="statsGrid"></div><div class="grid two-col"><article class="panel"><div class="panel-head"><h3>会話ログ</h3></div><div id="chatLog" class="stack-list"></div></article><article class="panel"><div class="panel-head"><h3>運用メモ</h3></div><div id="opsList" class="stack-list"></div></article></div><div class="grid two-col"><article class="panel"><div class="panel-head"><h3>問い合わせカテゴリ比率</h3></div><div id="categoryChart" class="mini-chart"></div></article><article class="panel"><div class="panel-head"><h3>チケット状況表</h3></div><div id="ticketTable" class="table-wrap"></div></article></div></section>
+        <section class="view" id="view-conversation"><article class="panel"><div class="panel-head"><h3>会話入力</h3></div><div class="compose"><textarea id="questionInput" placeholder="質問を入力"></textarea><button class="btn primary" id="sendQuestionBtn">送信</button></div><div id="conversationList" class="card-list"></div></article></section>
+        <section class="view" id="view-pipeline"><article class="panel"><div class="panel-head"><h3>AIステージ</h3></div><div id="pipelineList" class="card-list columns-3"></div></article></section>
+        <section class="view" id="view-tickets"><article class="panel"><div class="panel-head"><h3>問い合わせチケット</h3></div><div id="ticketList" class="card-list"></div></article></section>
+        <section class="view" id="view-faq"><article class="panel"><div class="panel-head"><h3>FAQ</h3></div><div id="faqList" class="card-list"></div></article></section>
+        <section class="view" id="view-operations"><article class="panel"><div class="panel-head"><h3>WebUI配信・運用</h3></div><div id="operationList" class="card-list"></div></article></section>
+        <section class="view" id="view-tests"><article class="panel"><div class="panel-head"><h3>テストメニュー</h3></div><div id="testList" class="card-list"></div></article></section>
+        <section class="view" id="view-settings"><div class="grid two-col"><article class="panel"><div class="panel-head"><h3>システム設定</h3></div><div id="settingsList" class="card-list"></div></article><article class="panel"><div class="panel-head"><h3>設定詳細</h3></div><div id="settingsDetail" class="card-list"></div></article></div></section>
+      </main>
+    </div>
+    <script src="./js/app.js"></script>
+  </body>
+</html>
