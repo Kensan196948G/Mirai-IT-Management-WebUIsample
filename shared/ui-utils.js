@@ -29,6 +29,81 @@
   };
 })();
 
+/* --- Modal --- */
+(function () {
+  window.showModal = function (title, bodyHTML, actions) {
+    var existing = document.querySelector(".modal-overlay");
+    if (existing) existing.remove();
+
+    var overlay = document.createElement("div");
+    overlay.className = "modal-overlay";
+
+    var modal = document.createElement("div");
+    modal.className = "modal";
+    modal.setAttribute("role", "dialog");
+    modal.setAttribute("aria-modal", "true");
+
+    var closeBtn = '<button class="modal-close" aria-label="閉じる">&times;</button>';
+    var heading = title ? '<h2>' + title.replace(/</g, '&lt;') + '</h2>' : '';
+    var actionsHTML = '';
+    if (actions && actions.length) {
+      actionsHTML = '<div class="modal-actions">' +
+        actions.map(function (a) {
+          return '<button class="btn ' + (a.primary ? 'primary' : 'ghost') + '" data-action="' + (a.key || '') + '">' +
+            a.label.replace(/</g, '&lt;') + '</button>';
+        }).join('') + '</div>';
+    }
+
+    modal.innerHTML = closeBtn + heading + '<div class="modal-body">' + bodyHTML + '</div>' + actionsHTML;
+    overlay.appendChild(modal);
+    document.body.appendChild(overlay);
+
+    requestAnimationFrame(function () { overlay.classList.add("is-open"); });
+
+    function close() { overlay.remove(); }
+    overlay.querySelector(".modal-close").addEventListener("click", close);
+    overlay.addEventListener("click", function (e) { if (e.target === overlay) close(); });
+
+    if (actions && actions.length) {
+      modal.querySelectorAll("[data-action]").forEach(function (btn) {
+        btn.addEventListener("click", function () {
+          var action = actions.find(function (a) { return a.key === btn.dataset.action; });
+          if (action && action.onClick) action.onClick();
+          close();
+        });
+      });
+    }
+
+    return { close: close };
+  };
+})();
+
+/* --- Dark Mode Toggle --- */
+(function () {
+  var stored = localStorage.getItem("theme");
+  var prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
+  var isDark = stored ? stored === "dark" : prefersDark;
+
+  if (isDark) document.documentElement.setAttribute("data-theme", "dark");
+
+  var toggle = document.createElement("button");
+  toggle.className = "theme-toggle";
+  toggle.setAttribute("aria-label", "テーマ切替");
+  toggle.textContent = isDark ? "\u2600" : "\u263E";
+  document.body.appendChild(toggle);
+
+  toggle.addEventListener("click", function () {
+    isDark = !isDark;
+    if (isDark) {
+      document.documentElement.setAttribute("data-theme", "dark");
+    } else {
+      document.documentElement.removeAttribute("data-theme");
+    }
+    toggle.textContent = isDark ? "\u2600" : "\u263E";
+    localStorage.setItem("theme", isDark ? "dark" : "light");
+  });
+})();
+
 /* --- Mobile Sidebar Toggle --- */
 (function () {
   var sidebar = document.querySelector(".sidebar");

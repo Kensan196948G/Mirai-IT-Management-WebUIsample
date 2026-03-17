@@ -188,3 +188,83 @@
   background: var(--primary-soft);
   color: var(--primary-strong);
 }
+
+/* ============================================================
+   Pill Variants — Status Colors
+   ============================================================ */
+.pill-deny     { background: #fef2f2; color: #dc2626; }
+.pill-pending  { background: #fffbeb; color: #d97706; }
+.pill-approved { background: #ecfdf5; color: #059669; }
+.pill-rejected { background: #fef2f2; color: #dc2626; }
+
+/* ============================================================
+   Approval Cards — Workflow Actions
+   ============================================================ */
+.approval-card {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.approval-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+
+.approval-actions {
+  display: flex;
+  gap: 8px;
+  margin-top: 8px;
+}
+
+.approval-time,
+.audit-time {
+  font-size: var(--text-xs, 0.75rem);
+  color: var(--muted);
+  font-family: var(--font-mono);
+}
+
+.btn-approve,
+.btn-reject {
+  padding: 6px 16px;
+  border: none;
+  border-radius: var(--radius-md, 6px);
+  cursor: pointer;
+  font-weight: 600;
+  font-size: var(--text-sm);
+  transition: opacity 0.15s;
+}
+
+.btn-approve        { background: #059669; color: #fff; }
+.btn-approve:hover  { opacity: 0.85; }
+.btn-reject         { background: #dc2626; color: #fff; }
+.btn-reject:hover   { opacity: 0.85; }
+
+/* ============================================================
+   Audit Entry — Clickable Row
+   ============================================================ */
+.audit-entry {
+  text-align: left;
+  width: 100%;
+  border: none;
+  background: inherit;
+  cursor: pointer;
+}
+
+.audit-entry:hover {
+  background: var(--surface-2);
+}
+
+.audit-row:hover {
+  background: var(--surface-2);
+}
+
+/* ============================================================
+   Modal Action Buttons (used by showModal actions array)
+   ============================================================ */
+.btn-primary { background: var(--primary-strong); color: #fff; }
+.btn-warning { background: #d97706; color: #fff; }
+.btn-danger  { background: #dc2626; color: #fff; }

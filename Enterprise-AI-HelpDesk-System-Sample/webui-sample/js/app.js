@@ -4,11 +4,14 @@ const pipeline = [
   { stage: "Perplexity", role: "最新情報補完・引用", model: "llama-3.1-sonar-small-128k-online" }
 ];
 let tickets = [
-  { id: "HD-101", title: "VPN接続が不安定", status: "Open", owner: "IT Support" },
-  { id: "HD-102", title: "Teams通知が届かない", status: "In Progress", owner: "Infra Team" },
-  { id: "HD-103", title: "PC更改手順を知りたい", status: "Resolved", owner: "AI Bot" }
+  { id: "HD-101", title: "VPN接続が不安定", status: "Open", owner: "IT Support", priority: "高", created: "2026-03-15", aiModel: "Claude + Gemini" },
+  { id: "HD-102", title: "Teams通知が届かない", status: "In Progress", owner: "Infra Team", priority: "中", created: "2026-03-14", aiModel: "Claude + Gemini + Perplexity" },
+  { id: "HD-103", title: "PC更改手順を知りたい", status: "Resolved", owner: "AI Bot", priority: "低", created: "2026-03-13", aiModel: "Claude" },
+  { id: "HD-104", title: "共有フォルダにアクセスできない", status: "Open", owner: "Infra Team", priority: "高", created: "2026-03-16", aiModel: "Claude + Perplexity" },
+  { id: "HD-105", title: "プリンタードライバーの更新方法", status: "Resolved", owner: "AI Bot", priority: "低", created: "2026-03-12", aiModel: "Claude" },
+  { id: "HD-106", title: "多要素認証の設定エラー", status: "In Progress", owner: "IT Support", priority: "高", created: "2026-03-16", aiModel: "Claude + Gemini" }
 ];
-const faqs = ["パスワード再設定の手順", "VPNクライアントの初期設定", "Windows更新後の確認項目", "PC申請フローの問い合わせ先"];
+const faqs = ["パスワード再設定の手順", "VPNクライアントの初期設定", "Windows更新後の確認項目", "PC申請フローの問い合わせ先", "多要素認証(MFA)の登録方法", "Teams会議の録画保存先", "共有フォルダのアクセス権申請", "リモートデスクトップ接続手順"];
 const ops = ["開発/本番 WebUI をポート分離して配信", "共有フォルダ不安定時は一時領域へミラー", "Playwright で UI / セキュリティ / 性能を確認"];
 const tests = ["Pester: scripts/Run-Tests.ps1 -Type all", "Playwright: npx playwright test", "ヘルスチェック: /api/health", "共有フォルダ配信確認"];
 const categoryBreakdown = [
@@ -30,21 +33,66 @@ const qsa = (s) => Array.from(document.querySelectorAll(s));
 const esc = (v) => String(v).replaceAll("&", "&amp;").replaceAll("<", "&lt;").replaceAll(">", "&gt;");
 function renderHero() { const items = [["AIステージ", pipeline.length], ["チケット", tickets.length], ["FAQ", faqs.length]]; qs("#heroBadges").innerHTML = items.map(([label, value]) => `<div class="hero-badge"><strong>${esc(value)}</strong><span>${esc(label)}</span></div>`).join(""); }
 function renderStats() { const stats = [["モード", state.mode, "PipelineMode"], ["Open", tickets.filter((t) => t.status === "Open").length, "未着手"], ["Resolved", tickets.filter((t) => t.status === "Resolved").length, "解決済み"], ["会話ログ", chats.length, "最新4件"]]; qs("#statsGrid").innerHTML = stats.map(([label, value, note]) => `<article class="stat-card"><span class="meta">${esc(label)}</span><strong>${esc(value)}</strong><span class="meta">${esc(note)}</span></article>`).join(""); }
-function renderOverview() { qs("#chatLog").innerHTML = chats.map((item) => `<div class="list-card"><span class="pill">Chat</span><p>${esc(item)}</p></div>`).join(""); qs("#opsList").innerHTML = ops.map((item) => `<div class="list-card"><span class="pill">Ops</span><p>${esc(item)}</p></div>`).join(""); qs("#categoryChart").innerHTML = categoryBreakdown.map((item) => `<div class="bar-row"><span>${esc(item.name)}</span><div class="bar-track"><span style="width:${item.value}%"></span></div><strong>${esc(item.value)}%</strong></div>`).join(""); qs("#ticketTable").innerHTML = `<table class="data-table"><thead><tr><th>ID</th><th>件名</th><th>状態</th></tr></thead><tbody>${tickets.map((row) => `<tr><td>${esc(row.id)}</td><td>${esc(row.title)}</td><td>${esc(row.status)}</td></tr>`).join("")}</tbody></table>`; }
+function renderOverview() { qs("#chatLog").innerHTML = chats.map((item) => `<div class="list-card"><span class="pill">Chat</span><p>${esc(item)}</p></div>`).join(""); qs("#opsList").innerHTML = ops.map((item) => `<div class="list-card"><span class="pill">Ops</span><p>${esc(item)}</p></div>`).join(""); qs("#categoryChart").innerHTML = categoryBreakdown.map((item) => `<div class="bar-row"><span>${esc(item.name)}</span><div class="bar-track"><span style="width:${item.value}%"></span></div><strong>${esc(item.value)}%</strong></div>`).join(""); qs("#ticketTable").innerHTML = `<table class="data-table"><thead><tr><th>ID</th><th>件名</th><th>優先度</th><th>状態</th><th>作成日</th></tr></thead><tbody>${tickets.map((row, i) => `<tr style="cursor:pointer" data-ticket-row="${i}"><td>${esc(row.id)}</td><td>${esc(row.title)}</td><td>${esc(row.priority)}</td><td>${esc(row.status)}</td><td>${esc(row.created)}</td></tr>`).join("")}</tbody></table>`; }
 function renderLists() {
   qs("#conversationList").innerHTML = chats.map((item) => `<div class="list-card"><strong>${esc(item.split(":")[0])}</strong><p>${esc(item)}</p><span class="pill">${esc(state.mode)}</span></div>`).join("");
   qs("#pipelineList").innerHTML = pipeline.map((item) => `<div class="list-card"><strong>${esc(item.stage)}</strong><p>${esc(item.role)}</p><span class="pill">${esc(item.model)}</span></div>`).join("");
-  qs("#ticketList").innerHTML = tickets.map((item, index) => `<button class="list-card" data-ticket="${index}"><strong>${esc(item.id)} ${esc(item.title)}</strong><p>${esc(item.owner)}</p><span class="pill">${esc(item.status)}</span></button>`).join("");
-  qs("#faqList").innerHTML = faqs.map((item) => `<div class="list-card"><strong>${esc(item)}</strong><p>AIとFAQ検索で回答可能</p><span class="pill">${esc(state.mode)}</span></div>`).join("");
+  qs("#ticketList").innerHTML = tickets.map((item, index) => `<button class="list-card" data-ticket="${index}"><strong>${esc(item.id)} ${esc(item.title)}</strong><p>${esc(item.owner)} | 優先度: ${esc(item.priority)} | ${esc(item.created)}</p><span class="pill">${esc(item.status)}</span></button>`).join("");
+  renderFaqList();
   qs("#operationList").innerHTML = ops.map((item) => `<div class="list-card"><strong>${esc(item)}</strong><p>README の運用メモ</p><span class="pill">ops</span></div>`).join("");
   qs("#testList").innerHTML = tests.map((item) => `<div class="list-card"><strong>${esc(item)}</strong><p>検証手順</p><span class="pill">test</span></div>`).join("");
   qs("#settingsList").innerHTML = settings.map((item) => `<button class="list-card ${item.name === state.selectedSetting ? "is-selected" : ""}" data-setting="${esc(item.name)}"><strong>${esc(item.name)}</strong><p>${esc(item.value)}</p><span class="pill">setting</span></button>`).join("");
   const setting = settings.find((item) => item.name === state.selectedSetting) || settings[0];
   qs("#settingsDetail").innerHTML = `<div class="list-card"><strong>${esc(setting.name)}</strong><p>現在値: ${esc(setting.value)}</p><span class="pill">detail</span><p>${esc(setting.note)}</p></div>`;
 }
+function renderFaqList(filter) {
+  const query = (filter || "").trim().toLowerCase();
+  const filtered = query ? faqs.filter((f) => f.toLowerCase().includes(query)) : faqs;
+  const searchBox = `<input type="text" id="faqSearchInput" placeholder="FAQ検索..." value="${esc(query)}" style="width:100%;padding:8px 12px;margin-bottom:12px;border:1px solid #d0d5dd;border-radius:8px;font-size:14px;">`;
+  const items = filtered.length ? filtered.map((item) => `<div class="list-card"><strong>${esc(item)}</strong><p>AIとFAQ検索で回答可能</p><span class="pill">${esc(state.mode)}</span></div>`).join("") : `<div class="list-card"><p>該当するFAQが見つかりません</p></div>`;
+  qs("#faqList").innerHTML = searchBox + items;
+  const input = qs("#faqSearchInput");
+  if (input) input.addEventListener("input", (e) => renderFaqList(e.target.value));
+}
+function showTicketDetail(index) {
+  const t = tickets[index];
+  if (!t) return;
+  const priorityColor = t.priority === "高" ? "#e53e3e" : t.priority === "中" ? "#dd6b20" : "#38a169";
+  const statusColor = t.status === "Open" ? "#3182ce" : t.status === "In Progress" ? "#dd6b20" : "#38a169";
+  const body = `
+    <table style="width:100%;border-collapse:collapse;">
+      <tr><td style="padding:8px;font-weight:bold;width:120px;">チケットID</td><td style="padding:8px;">${esc(t.id)}</td></tr>
+      <tr><td style="padding:8px;font-weight:bold;">件名</td><td style="padding:8px;">${esc(t.title)}</td></tr>
+      <tr><td style="padding:8px;font-weight:bold;">状態</td><td style="padding:8px;"><span style="color:${statusColor};font-weight:bold;">${esc(t.status)}</span></td></tr>
+      <tr><td style="padding:8px;font-weight:bold;">優先度</td><td style="padding:8px;"><span style="color:${priorityColor};font-weight:bold;">${esc(t.priority)}</span></td></tr>
+      <tr><td style="padding:8px;font-weight:bold;">作成日</td><td style="padding:8px;">${esc(t.created)}</td></tr>
+      <tr><td style="padding:8px;font-weight:bold;">担当</td><td style="padding:8px;">${esc(t.owner)}</td></tr>
+      <tr><td style="padding:8px;font-weight:bold;">AIモデル</td><td style="padding:8px;">${esc(t.aiModel)}</td></tr>
+    </table>`;
+  showModal(t.id + " - " + t.title, body, [{ label: "閉じる", className: "primary" }]);
+}
+function simulateAIPipeline(question) {
+  showToast("Stage 1: Claude 初期回答生成...", "info");
+  setTimeout(() => {
+    showToast("Stage 2: Gemini 検証中...", "warning");
+    setTimeout(() => {
+      showToast("Stage 3: Perplexity 最新情報補完... 回答完了", "success");
+      chats = [
+        `ユーザー: ${question}`,
+        `[Stage1] Claude: 質問「${question}」を解析し回答を生成しました`,
+        `[Stage2] Gemini: 回答を検証し、内容の妥当性を確認しました`,
+        `[Stage3] Perplexity: 最新情報と参考URLを追加しました`,
+        ...chats
+      ].slice(0, 10);
+      render();
+      state.view = "conversation";
+      syncView();
+    }, 1000);
+  }, 1000);
+}
 function syncView() { const titles = { overview: "ダッシュボード", conversation: "AI会話", pipeline: "AIパイプライン", tickets: "チケット", faq: "FAQ", operations: "運用", tests: "テスト", settings: "システム設定" }; qs("#pageTitle").textContent = titles[state.view]; qsa(".nav-item").forEach((n) => { const a = n.dataset.view === state.view; n.classList.toggle("is-active", a); a ? n.setAttribute("aria-current", "page") : n.removeAttribute("aria-current"); }); qsa(".view").forEach((v) => v.classList.toggle("is-active", v.id === `view-${state.view}`)); }
 function render() { renderHero(); renderStats(); renderOverview(); renderLists(); syncView(); }
-document.addEventListener("click", (e) => { const nav = e.target.closest("[data-view]"); if (nav) { state.view = nav.dataset.view; render(); } const ticket = e.target.closest("[data-ticket]"); if (ticket) { const row = tickets[Number(ticket.dataset.ticket)]; row.status = row.status === "Resolved" ? "Open" : "Resolved"; showToast(row.id + " " + row.title + " → " + row.status, row.status === "Resolved" ? "success" : "warning"); render(); } const setting = e.target.closest("[data-setting]"); if (setting) { state.selectedSetting = setting.dataset.setting; renderLists(); } });
-qs("#askDemoBtn").addEventListener("click", () => { chats = [`AI(${state.mode}): 問い合わせを受け付けました`, ...chats].slice(0, 6); showToast("問い合わせを受け付けました", "success"); render(); });
-qs("#sendQuestionBtn").addEventListener("click", () => { const value = qs("#questionInput").value.trim(); if (!value) return; chats = [`ユーザー: ${value}`, `AI(${state.mode}): 質問を解析しました`, ...chats].slice(0, 8); qs("#questionInput").value = ""; showToast("質問を送信しました", "success"); render(); state.view = "conversation"; syncView(); });
+document.addEventListener("click", (e) => { const nav = e.target.closest("[data-view]"); if (nav) { state.view = nav.dataset.view; render(); } const ticket = e.target.closest("[data-ticket]"); if (ticket) { showTicketDetail(Number(ticket.dataset.ticket)); } const ticketRow = e.target.closest("[data-ticket-row]"); if (ticketRow) { showTicketDetail(Number(ticketRow.dataset.ticketRow)); } const setting = e.target.closest("[data-setting]"); if (setting) { state.selectedSetting = setting.dataset.setting; renderLists(); } });
+qs("#askDemoBtn").addEventListener("click", () => { simulateAIPipeline("デモ問い合わせ"); });
+qs("#sendQuestionBtn").addEventListener("click", () => { const value = qs("#questionInput").value.trim(); if (!value) return; qs("#questionInput").value = ""; simulateAIPipeline(value); });
 render();
