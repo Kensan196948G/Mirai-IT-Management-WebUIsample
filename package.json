@@ -10,6 +10,7 @@
   },
   "scripts": {
     "check": "node scripts/check-syntax.js",
-    "validate": "node scripts/validate-structure.js"
+    "validate": "node scripts/validate-structure.js",
+    "test": "node scripts/check-syntax.js && node scripts/validate-structure.js"
   }
 }

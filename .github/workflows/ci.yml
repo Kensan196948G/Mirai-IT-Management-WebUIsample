@@ -1,0 +1,35 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+    branches: [main]
+
+jobs:
+  quality:
+    name: Quality Checks
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: JS Syntax Check
+        run: node scripts/check-syntax.js
+
+      - name: Structure Validation
+        run: node scripts/validate-structure.js
+
+      - name: E2E Smoke Test
+        run: |
+          python3 -m http.server 8090 --directory . &
+          sleep 2
+          node scripts/e2e-smoke.js
+          kill %1 2>/dev/null || true
