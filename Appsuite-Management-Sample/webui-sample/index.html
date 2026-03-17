@@ -11,7 +11,7 @@
   </head>
   <body>
     <div class="app-shell">
-      <aside class="sidebar">
+      <aside class="sidebar" role="complementary" aria-label="サイドバー">
         <div class="brand">
           <div class="brand-icon">A</div>
           <div>
@@ -19,8 +19,8 @@
             <p class="brand-sub">DeskNet's Neo 連携</p>
           </div>
         </div>
-        <nav class="nav">
-          <button class="nav-item is-active" data-view="dashboard">ダッシュボード</button>
+        <nav class="nav" role="navigation" aria-label="メインナビゲーション">
+          <button class="nav-item is-active" data-view="dashboard" aria-current="page">ダッシュボード</button>
           <button class="nav-item" data-view="users">ユーザー管理</button>
           <button class="nav-item" data-view="apps">アプリ管理</button>
           <button class="nav-item" data-view="incidents">インシデント</button>
@@ -30,7 +30,7 @@
         </nav>
       </aside>
 
-      <main class="main">
+      <main class="main" role="main">
         <header class="topbar">
           <div>
             <p class="eyebrow">README に基づく動的サンプル</p>
@@ -52,7 +52,7 @@
         </section>
 
         <section class="view is-active" id="view-dashboard">
-          <div class="stats-grid" id="statsGrid"></div>
+          <div class="stats-grid" id="statsGrid" role="region" aria-label="統計情報"></div>
           <div class="grid two-col">
             <article class="panel">
               <div class="panel-head"><h3>最近の監査ログ</h3></div>
@@ -136,6 +136,7 @@
         </section>
       </main>
     </div>
+    <script src="../../shared/ui-utils.js"></script>
     <script src="./js/app.js"></script>
   </body>
 </html>

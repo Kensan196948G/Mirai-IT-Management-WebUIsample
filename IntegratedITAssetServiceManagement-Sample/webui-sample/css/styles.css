@@ -1,99 +1,256 @@
+@import "../../../shared/design-tokens.css";
+
+/* ============================================================
+   Integrated IT Asset Service Management — Enterprise Navy
+   Deep navy + gold accents, structured governance aesthetic
+   ============================================================ */
 :root {
-  --bg: #ffffff;
-  --surface: #f9fbfe;
-  --surface-2: #f0f6fc;
-  --line: #d8e5f2;
-  --text: #31485d;
-  --muted: #74889a;
-  --blue: #9ec9ee;
-  --blue-strong: #71aadd;
-  --blue-soft: #edf5fc;
-  --shadow: 0 16px 28px rgba(136, 172, 204, 0.12);
+  /* Primary: Enterprise Navy */
+  --primary:        #2b5ea7;
+  --primary-light:  #3b82c4;
+  --primary-soft:   #e8eef6;
+  --primary-strong: #1e3a8a;
+
+  /* Gold accent for enterprise feel */
+  --accent-gold:    #c49a2a;
+  --accent-gold-soft: #fdf6e3;
+
+  /* Accent overrides — bolder tones */
+  --accent-success: #16764e;
+  --accent-warning: #b87a0a;
+  --accent-danger:  #b91c1c;
+
+  /* Neutral surfaces — cool slate undertone */
+  --bg:         #ffffff;
+  --surface:    #f4f6f9;
+  --surface-2:  #e9edf4;
+  --surface-3:  #dce2ec;
+
+  /* Borders — stronger for structured feel */
+  --line:       #c5ced9;
+  --line-light: #d9e0ea;
+
+  /* Text — deep navy hierarchy */
+  --text:       #0f1d2f;
+  --text-2:     #374b63;
+  --muted:      #6b7f94;
+
+  /* Shadows — subtle blue-gray */
+  --shadow-sm:  0 1px 4px rgba(30, 58, 138, 0.06);
+  --shadow-md:  0 4px 16px rgba(30, 58, 138, 0.09);
+  --shadow-lg:  0 12px 32px rgba(30, 58, 138, 0.12);
+
+  /* Tighter radii for structured look */
+  --radius-sm:   6px;
+  --radius-md:   10px;
+  --radius-lg:   14px;
+  --radius-xl:   18px;
+
+  --sidebar-width: 258px;
 }
 
-* { box-sizing: border-box; }
-body { margin: 0; font-family: "Murecho", sans-serif; background: #fff; color: var(--text); }
-button, select { font: inherit; }
-.app-shell { display: grid; grid-template-columns: 252px minmax(0, 1fr); min-height: 100vh; }
+/* ============================================================
+   Sidebar — dark navy treatment
+   ============================================================ */
 .sidebar {
-  padding: 18px 16px 24px;
-  border-right: 1px solid var(--line);
-  background: linear-gradient(180deg, #ffffff 0%, #f8fbfe 100%);
+  background: linear-gradient(180deg, #1a2744 0%, #142036 100%);
+  border-right: 1px solid #2a3f5f;
+  color: #c4d0e0;
 }
-.brand, .topbar, .panel-head { display: flex; align-items: center; gap: 12px; }
-.brand { justify-content: flex-start; margin-bottom: 18px; padding-bottom: 14px; border-bottom: 1px solid var(--line); }
+
+.brand {
+  border-bottom-color: rgba(255, 255, 255, 0.1);
+}
+
 .brand-icon {
-  width: 42px; height: 42px; display: grid; place-items: center; border-radius: 12px;
-  background: linear-gradient(180deg, #f4fafe 0%, #ddebfa 100%); color: var(--blue-strong); font-weight: 800;
+  background: linear-gradient(135deg, #2b5ea7 0%, #1e3a8a 100%);
+  color: #f0c850;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.25);
 }
-.brand-title, .brand-sub, .eyebrow, .lead { margin: 0; }
-.brand-title { font-size: 1rem; font-weight: 800; }
-.brand-sub, .eyebrow, .lead, .field span, .meta { color: var(--muted); }
-.nav { display: grid; gap: 6px; }
-.nav-item, .btn { border: 0; cursor: pointer; }
+
+.brand-title { color: #ffffff; }
+.brand-sub   { color: #7b91ad; }
+
 .nav-item {
-  padding: 11px 12px; background: transparent; border-radius: 12px; text-align: left; color: var(--text);
-  box-shadow: inset 0 0 0 1px transparent;
+  color: #9aadc4;
 }
-.nav-item.is-active, .nav-item:hover {
-  background: var(--blue-soft); color: var(--blue-strong); box-shadow: inset 0 0 0 1px var(--line);
+
+.nav-item:hover {
+  background: rgba(255, 255, 255, 0.06);
+  color: #e0e8f0;
 }
-.side-card, .hero, .panel, .hero-badge, .stat-card, .list-card {
-  border: 1px solid var(--line); border-radius: 14px; background: #fff; box-shadow: var(--shadow);
+
+.nav-item.is-active {
+  background: rgba(43, 94, 167, 0.25);
+  color: #ffffff;
+  box-shadow: inset 0 0 0 1px rgba(59, 130, 196, 0.3);
 }
-.side-card, .hero, .panel, .hero-badge, .stat-card, .list-card { padding: 14px; }
-.field { display: grid; gap: 8px; }
-.field select { padding: 12px; border: 1px solid var(--line); border-radius: 10px; background: #fff; }
-.main { padding: 18px 22px 24px; background: linear-gradient(180deg, #ffffff 0%, #fbfdff 100%); }
-.topbar { justify-content: space-between; margin-bottom: 14px; }
-.btn { padding: 11px 15px; border-radius: 12px; background: linear-gradient(180deg, #8dbce8 0%, #74abdc 100%); color: #fff; }
+
+.nav-item::before {
+  background: var(--accent-gold);
+}
+
+/* ============================================================
+   Hero — enterprise banner
+   ============================================================ */
 .hero {
-  display: grid; grid-template-columns: 1.4fr 0.8fr; gap: 14px; margin: 10px 0 16px;
   background:
-    linear-gradient(180deg, rgba(240, 246, 252, 0.95) 0%, rgba(255, 255, 255, 1) 65%);
+    linear-gradient(135deg, #1e3a8a 0%, #2b5ea7 60%, #1a2744 100%);
+  color: #ffffff;
+  border-color: #2b5ea7;
 }
-.hero h2 { margin: 6px 0 8px; font-size: 1.9rem; }
-.hero-badges, .stats-grid, .grid, .stack-list, .card-list { display: grid; gap: 14px; }
-.hero-badges { grid-template-columns: 1fr; }
+
+.hero .eyebrow {
+  color: #f0c850;
+}
+
+.hero h2 {
+  color: #ffffff;
+}
+
+.hero .lead {
+  color: #b8cae0;
+}
+
 .hero-badge {
-  background: linear-gradient(180deg, #ffffff 0%, #f8fbfe 100%);
-  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.1);
+  border-color: rgba(255, 255, 255, 0.15);
+  color: #ffffff;
+  backdrop-filter: blur(8px);
 }
-.hero-badge strong, .stat-card strong { display: block; font-size: 1.7rem; margin: 6px 0 2px; }
-.stats-grid { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+
+.hero-badge:hover {
+  background: rgba(255, 255, 255, 0.16);
+}
+
+.hero-badge .meta { color: #8eacc8; }
+
+/* ============================================================
+   Stat Cards — top accent bar
+   ============================================================ */
 .stat-card {
+  padding-top: var(--space-6);
+  border-color: var(--line);
   position: relative;
-  padding-top: 22px;
 }
+
 .stat-card::before {
   content: "";
-  position: absolute; left: 14px; top: 10px; width: 30px; height: 4px; border-radius: 999px;
-  background: var(--blue);
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 3px;
+  background: linear-gradient(90deg, var(--primary-strong), var(--primary-light));
+  border-radius: var(--radius-md) var(--radius-md) 0 0;
 }
-.grid.two-col { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-.panel { padding: 18px; }
-.panel-head { justify-content: space-between; margin-bottom: 12px; }
-.card-list.columns-3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+
+/* Remove the default circle decoration — clean data-dense look */
+.stat-card::after {
+  display: none;
+}
+
+.stat-card:nth-child(2)::before {
+  background: linear-gradient(90deg, var(--accent-gold), #d4aa3a);
+}
+.stat-card:nth-child(3)::before {
+  background: linear-gradient(90deg, var(--accent-success), #1e9a5c);
+}
+.stat-card:nth-child(4)::before {
+  background: linear-gradient(90deg, var(--accent-danger), #dc3545);
+}
+
+.stat-card strong {
+  color: var(--primary-strong);
+}
+
+/* ============================================================
+   Panels — enterprise-grade hierarchy
+   ============================================================ */
+.panel {
+  border-color: var(--line);
+  border-left: 3px solid var(--primary);
+}
+
+.panel-head {
+  padding-bottom: var(--space-3);
+  border-bottom: 1px solid var(--line-light);
+}
+
+.panel-head h3 {
+  letter-spacing: 0.01em;
+}
+
+/* ============================================================
+   List Cards — structured border patterns
+   ============================================================ */
 .list-card {
-  border-radius: 12px;
-  background:
-    linear-gradient(180deg, #ffffff 0%, #f8fbfe 100%);
+  border-left: 3px solid var(--primary-light);
+  border-radius: 0 var(--radius-md) var(--radius-md) 0;
+  background: linear-gradient(180deg, #ffffff 0%, var(--surface) 100%);
 }
-.list-card strong { display: block; margin-bottom: 8px; }
+
+.list-card:hover {
+  border-left-color: var(--primary-strong);
+  box-shadow: var(--shadow-md);
+}
+
+.list-card.is-selected {
+  border-left-color: var(--accent-gold);
+  background: var(--accent-gold-soft);
+  box-shadow: var(--shadow-md);
+}
+
+/* ============================================================
+   Pills — enterprise palette
+   ============================================================ */
 .pill {
-  display: inline-flex; padding: 5px 9px; border-radius: 999px; background: var(--blue-soft);
-  color: var(--blue-strong); font-size: 0.78rem;
+  background: var(--primary-soft);
+  color: var(--primary-strong);
+  font-weight: var(--weight-bold);
+  letter-spacing: 0.02em;
 }
-.mini-chart, .table-wrap { display: grid; gap: 12px; }
-.bar-row { display: grid; grid-template-columns: 120px 1fr 44px; gap: 10px; align-items: center; }
-.bar-track { height: 10px; border-radius: 999px; background: var(--surface-2); overflow: hidden; }
-.bar-track span { display: block; height: 100%; background: linear-gradient(90deg, var(--blue), var(--blue-strong)); }
-.data-table { width: 100%; border-collapse: collapse; font-size: 0.94rem; }
-.data-table th, .data-table td { padding: 10px 8px; border-bottom: 1px solid var(--line); text-align: left; }
-.data-table th { color: var(--muted); font-weight: 700; }
-.view { display: none; }
-.view.is-active { display: block; }
-@media (max-width: 960px) {
-  .app-shell { grid-template-columns: 1fr; }
-  .hero, .stats-grid, .grid.two-col, .card-list.columns-3 { grid-template-columns: 1fr; }
+
+.pill.success { background: #e1f3eb; color: var(--accent-success); }
+.pill.warning { background: var(--accent-gold-soft); color: var(--accent-warning); }
+.pill.danger  { background: #fde8e8; color: var(--accent-danger); }
+
+/* ============================================================
+   Buttons — navy gradient
+   ============================================================ */
+.btn.primary {
+  background: linear-gradient(135deg, var(--primary) 0%, var(--primary-strong) 100%);
+  box-shadow: 0 3px 10px rgba(30, 58, 138, 0.25);
+}
+
+.btn.primary:hover {
+  box-shadow: 0 5px 18px rgba(30, 58, 138, 0.35);
+}
+
+/* ============================================================
+   Bar Charts — navy tones
+   ============================================================ */
+.bar-track span {
+  background: linear-gradient(90deg, var(--primary-light), var(--primary-strong));
+}
+
+/* ============================================================
+   Data Tables — governance striping
+   ============================================================ */
+.data-table th {
+  color: var(--primary-strong);
+  border-bottom: 2px solid var(--primary);
+}
+
+.data-table tbody tr:hover {
+  background: var(--primary-soft);
+}
+
+/* ============================================================
+   Topbar — subtle bottom rule
+   ============================================================ */
+.topbar {
+  padding-bottom: var(--space-4);
+  border-bottom: 1px solid var(--line-light);
+  margin-bottom: var(--space-5);
 }

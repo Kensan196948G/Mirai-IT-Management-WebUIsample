@@ -89,7 +89,7 @@ function renderLists() {
 function syncView() {
   const titles = { dashboard: "ダッシュボード", users: "ユーザー管理", apps: "アプリ管理", incidents: "インシデント", changes: "変更管理", logs: "監査ログ", settings: "システム設定" };
   qs("#pageTitle").textContent = titles[state.view];
-  qsa(".nav-item").forEach((item) => item.classList.toggle("is-active", item.dataset.view === state.view));
+  qsa(".nav-item").forEach((item) => { const a = item.dataset.view === state.view; item.classList.toggle("is-active", a); a ? item.setAttribute("aria-current", "page") : item.removeAttribute("aria-current"); });
   qsa(".view").forEach((view) => view.classList.toggle("is-active", view.id === `view-${state.view}`));
 }
 
@@ -112,12 +112,14 @@ document.addEventListener("click", (event) => {
     const row = incidents[Number(incident.dataset.escalate)];
     row.status = row.status === "対応中" ? "エスカレーション" : "対応中";
     logs = [`${row.title} を ${row.status} に更新`, ...logs].slice(0, 5);
+    showToast(row.title + " → " + row.status, "warning");
     render();
   }
   const setting = event.target.closest("[data-setting]");
   if (setting) {
     const row = settings.find((item) => item.key === setting.dataset.setting);
     row.enabled = !row.enabled;
+    showToast(row.label + ": " + (row.enabled ? "有効" : "無効"), "success");
     renderLists();
   }
 });

@@ -1,0 +1,412 @@
+<!doctype html>
+<html lang="ja">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Mirai IT Management — WebUI Showcase</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Murecho:wght@400;500;700;800;900&display=swap" rel="stylesheet" />
+    <style>
+      /* --- Design Tokens --- */
+      :root {
+        --bg: #0c1222;
+        --surface: #151d30;
+        --surface-2: #1c2740;
+        --line: #2a3654;
+        --text: #e8edf5;
+        --text-2: #a0aec0;
+        --muted: #6b7a8f;
+        --accent: #60a5fa;
+        --font: "Murecho", sans-serif;
+        --radius: 20px;
+        --transition: 350ms cubic-bezier(0.4, 0, 0.2, 1);
+      }
+
+      *, *::before, *::after { box-sizing: border-box; margin: 0; }
+
+      body {
+        font-family: var(--font);
+        background: var(--bg);
+        color: var(--text);
+        min-height: 100vh;
+        -webkit-font-smoothing: antialiased;
+      }
+
+      /* --- Background Effect --- */
+      body::before {
+        content: "";
+        position: fixed;
+        inset: 0;
+        background:
+          radial-gradient(ellipse at 20% 0%, rgba(96, 165, 250, 0.08) 0%, transparent 50%),
+          radial-gradient(ellipse at 80% 100%, rgba(139, 92, 246, 0.06) 0%, transparent 50%);
+        pointer-events: none;
+        z-index: 0;
+      }
+
+      /* --- Header --- */
+      .header {
+        position: relative;
+        z-index: 1;
+        text-align: center;
+        padding: 80px 24px 48px;
+      }
+
+      .header-badge {
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+        padding: 6px 16px;
+        border-radius: 999px;
+        background: var(--surface);
+        border: 1px solid var(--line);
+        font-size: 0.8rem;
+        color: var(--accent);
+        font-weight: 700;
+        letter-spacing: 0.06em;
+        text-transform: uppercase;
+        margin-bottom: 24px;
+      }
+
+      .header-badge::before {
+        content: "";
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+        background: var(--accent);
+        animation: pulse 2s infinite;
+      }
+
+      @keyframes pulse {
+        0%, 100% { opacity: 1; }
+        50% { opacity: 0.4; }
+      }
+
+      .header h1 {
+        font-size: clamp(2rem, 5vw, 3.5rem);
+        font-weight: 900;
+        line-height: 1.2;
+        margin-bottom: 16px;
+        background: linear-gradient(135deg, #e8edf5 0%, #60a5fa 50%, #a78bfa 100%);
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+      }
+
+      .header p {
+        font-size: 1.1rem;
+        color: var(--text-2);
+        max-width: 600px;
+        margin: 0 auto;
+        line-height: 1.7;
+      }
+
+      /* --- Module Grid --- */
+      .grid {
+        position: relative;
+        z-index: 1;
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(340px, 1fr));
+        gap: 24px;
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 0 24px 80px;
+      }
+
+      /* --- Module Card --- */
+      .card {
+        position: relative;
+        display: flex;
+        flex-direction: column;
+        padding: 32px 28px 28px;
+        border-radius: var(--radius);
+        background: var(--surface);
+        border: 1px solid var(--line);
+        text-decoration: none;
+        color: var(--text);
+        overflow: hidden;
+        transition:
+          transform var(--transition),
+          box-shadow var(--transition),
+          border-color var(--transition);
+      }
+
+      .card::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        border-radius: var(--radius);
+        opacity: 0;
+        transition: opacity var(--transition);
+      }
+
+      .card:hover {
+        transform: translateY(-6px);
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+        text-decoration: none;
+      }
+
+      .card:hover::before { opacity: 1; }
+
+      /* Per-module theme gradients */
+      .card[data-theme="blue"]::before   { background: linear-gradient(135deg, rgba(59,130,246,0.08) 0%, transparent 60%); }
+      .card[data-theme="green"]::before  { background: linear-gradient(135deg, rgba(34,197,94,0.08) 0%, transparent 60%); }
+      .card[data-theme="purple"]::before { background: linear-gradient(135deg, rgba(139,92,246,0.08) 0%, transparent 60%); }
+      .card[data-theme="navy"]::before   { background: linear-gradient(135deg, rgba(30,64,175,0.12) 0%, transparent 60%); }
+      .card[data-theme="terminal"]::before { background: linear-gradient(135deg, rgba(16,185,129,0.08) 0%, transparent 60%); }
+      .card[data-theme="warm"]::before   { background: linear-gradient(135deg, rgba(194,112,78,0.08) 0%, transparent 60%); }
+
+      .card:hover[data-theme="blue"]     { border-color: rgba(59,130,246,0.4); }
+      .card:hover[data-theme="green"]    { border-color: rgba(34,197,94,0.4); }
+      .card:hover[data-theme="purple"]   { border-color: rgba(139,92,246,0.4); }
+      .card:hover[data-theme="navy"]     { border-color: rgba(30,64,175,0.5); }
+      .card:hover[data-theme="terminal"] { border-color: rgba(16,185,129,0.4); }
+      .card:hover[data-theme="warm"]     { border-color: rgba(194,112,78,0.4); }
+
+      .card-icon {
+        width: 56px;
+        height: 56px;
+        border-radius: 16px;
+        display: grid;
+        place-items: center;
+        font-size: 1.5rem;
+        margin-bottom: 20px;
+        font-weight: 800;
+        transition: transform var(--transition);
+      }
+
+      .card:hover .card-icon { transform: scale(1.08); }
+
+      .card[data-theme="blue"] .card-icon     { background: linear-gradient(135deg, #3b82f6, #2563eb); color: #fff; box-shadow: 0 4px 16px rgba(59,130,246,0.3); }
+      .card[data-theme="green"] .card-icon    { background: linear-gradient(135deg, #22c55e, #16a34a); color: #fff; box-shadow: 0 4px 16px rgba(34,197,94,0.3); }
+      .card[data-theme="purple"] .card-icon   { background: linear-gradient(135deg, #8b5cf6, #7c3aed); color: #fff; box-shadow: 0 4px 16px rgba(139,92,246,0.3); }
+      .card[data-theme="navy"] .card-icon     { background: linear-gradient(135deg, #2b5ea7, #1e3a8a); color: #c9a227; box-shadow: 0 4px 16px rgba(30,58,138,0.3); }
+      .card[data-theme="terminal"] .card-icon { background: linear-gradient(135deg, #1e293b, #0f172a); color: #34d399; box-shadow: 0 4px 16px rgba(16,185,129,0.2); }
+      .card[data-theme="warm"] .card-icon     { background: linear-gradient(135deg, #5f8c5a, #4a7c59); color: #faf6f0; box-shadow: 0 4px 16px rgba(95,140,90,0.3); }
+
+      .card h2 {
+        font-size: 1.25rem;
+        font-weight: 800;
+        margin-bottom: 8px;
+        line-height: 1.3;
+      }
+
+      .card .desc {
+        font-size: 0.9rem;
+        color: var(--text-2);
+        line-height: 1.6;
+        flex: 1;
+        margin-bottom: 20px;
+      }
+
+      .card-tags {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 6px;
+        margin-bottom: 16px;
+      }
+
+      .tag {
+        padding: 4px 10px;
+        border-radius: 999px;
+        background: var(--surface-2);
+        border: 1px solid var(--line);
+        font-size: 0.72rem;
+        color: var(--text-2);
+        font-weight: 500;
+      }
+
+      .card-footer {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding-top: 16px;
+        border-top: 1px solid var(--line);
+      }
+
+      .card-status {
+        font-size: 0.78rem;
+        color: var(--muted);
+        font-weight: 500;
+      }
+
+      .card-arrow {
+        width: 32px;
+        height: 32px;
+        border-radius: 50%;
+        background: var(--surface-2);
+        display: grid;
+        place-items: center;
+        font-size: 0.85rem;
+        transition: transform var(--transition), background var(--transition);
+      }
+
+      .card:hover .card-arrow {
+        transform: translateX(4px);
+      }
+
+      .card:hover[data-theme="blue"] .card-arrow     { background: rgba(59,130,246,0.2); }
+      .card:hover[data-theme="green"] .card-arrow    { background: rgba(34,197,94,0.2); }
+      .card:hover[data-theme="purple"] .card-arrow   { background: rgba(139,92,246,0.2); }
+      .card:hover[data-theme="navy"] .card-arrow     { background: rgba(30,64,175,0.2); }
+      .card:hover[data-theme="terminal"] .card-arrow { background: rgba(16,185,129,0.2); }
+      .card:hover[data-theme="warm"] .card-arrow     { background: rgba(194,112,78,0.2); }
+
+      /* --- Footer --- */
+      .footer {
+        position: relative;
+        z-index: 1;
+        text-align: center;
+        padding: 40px 24px;
+        border-top: 1px solid var(--line);
+        color: var(--muted);
+        font-size: 0.85rem;
+      }
+
+      .footer a { color: var(--accent); text-decoration: none; }
+      .footer a:hover { text-decoration: underline; }
+
+      /* --- Entrance Animation --- */
+      .card {
+        opacity: 0;
+        transform: translateY(24px);
+        animation: cardUp 600ms cubic-bezier(0.4, 0, 0.2, 1) forwards;
+      }
+
+      .card:nth-child(1) { animation-delay: 100ms; }
+      .card:nth-child(2) { animation-delay: 200ms; }
+      .card:nth-child(3) { animation-delay: 300ms; }
+      .card:nth-child(4) { animation-delay: 400ms; }
+      .card:nth-child(5) { animation-delay: 500ms; }
+      .card:nth-child(6) { animation-delay: 600ms; }
+
+      @keyframes cardUp {
+        to { opacity: 1; transform: translateY(0); }
+      }
+
+      /* --- Responsive --- */
+      @media (max-width: 720px) {
+        .header { padding: 48px 20px 32px; }
+        .grid { grid-template-columns: 1fr; padding: 0 16px 48px; }
+        .card { padding: 24px 20px 20px; }
+      }
+
+      @media (prefers-reduced-motion: reduce) {
+        *, *::before, *::after {
+          animation-duration: 0.01ms !important;
+          transition-duration: 0.01ms !important;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <header class="header">
+      <div class="header-badge">WebUI Showcase</div>
+      <h1>Mirai IT Management</h1>
+      <p>IT運用・管理系サンプルシステムのWebUIコレクション。各モジュールのカードをクリックしてインタラクティブなデモをご覧ください。</p>
+    </header>
+
+    <main class="grid" role="main">
+      <a class="card" data-theme="blue" href="Appsuite-Management-Sample/webui-sample/index.html">
+        <div class="card-icon">A</div>
+        <h2>AppSuite ITSM 管理</h2>
+        <p class="desc">DeskNet's Neo AppSuite と連携した ITIL 準拠の IT サービス管理。ユーザー・アプリ・インシデント・変更・監査ログを一画面で運用。</p>
+        <div class="card-tags">
+          <span class="tag">ITSM</span>
+          <span class="tag">ITIL</span>
+          <span class="tag">監査ログ</span>
+          <span class="tag">SLA管理</span>
+        </div>
+        <div class="card-footer">
+          <span class="card-status">v1.1.0 — Production Ready</span>
+          <span class="card-arrow">→</span>
+        </div>
+      </a>
+
+      <a class="card" data-theme="green" href="Backup-management-system-Sample/webui-sample/index.html">
+        <div class="card-icon">B</div>
+        <h2>3-2-1-1-0 バックアップ管理</h2>
+        <p class="desc">3-2-1-1-0 バックアップルールの準拠監視。Veeam / WSB / AOMEI 連携によるマルチツール統合と ISO 27001/19650 コンプライアンスレポート。</p>
+        <div class="card-tags">
+          <span class="tag">3-2-1-1-0</span>
+          <span class="tag">ISO 27001</span>
+          <span class="tag">Veeam</span>
+          <span class="tag">コンプライアンス</span>
+        </div>
+        <div class="card-footer">
+          <span class="card-status">MVP Phase 10 — Complete</span>
+          <span class="card-arrow">→</span>
+        </div>
+      </a>
+
+      <a class="card" data-theme="purple" href="Enterprise-AI-HelpDesk-System-Sample/webui-sample/index.html">
+        <div class="card-icon">AI</div>
+        <h2>Enterprise AI ヘルプデスク</h2>
+        <p class="desc">3段階 AI パイプライン（Claude → Gemini → Perplexity）による高品質な社内問い合わせ対応。チケット管理・FAQ・会話UI を統合。</p>
+        <div class="card-tags">
+          <span class="tag">AI Pipeline</span>
+          <span class="tag">Claude</span>
+          <span class="tag">チケット</span>
+          <span class="tag">FAQ</span>
+        </div>
+        <div class="card-footer">
+          <span class="card-status">Phase 12 — Phase 13 準備中</span>
+          <span class="card-arrow">→</span>
+        </div>
+      </a>
+
+      <a class="card" data-theme="navy" href="IntegratedITAssetServiceManagement-Sample/webui-sample/index.html">
+        <div class="card-icon">IT</div>
+        <h2>統合 IT 資産・サービス管理</h2>
+        <p class="desc">IT 資産ライフサイクル・ソフトウェアライセンス・CMDB・調達管理を統合。ITIL / ISO 20000 準拠のエンタープライズプラットフォーム。</p>
+        <div class="card-tags">
+          <span class="tag">CMDB</span>
+          <span class="tag">ISO 20000</span>
+          <span class="tag">資産管理</span>
+          <span class="tag">1157テスト</span>
+        </div>
+        <div class="card-footer">
+          <span class="card-status">Phase 22 — Production Ready</span>
+          <span class="card-arrow">→</span>
+        </div>
+      </a>
+
+      <a class="card" data-theme="terminal" href="Linux-Management-Systm/webui-sample/index.html">
+        <div class="card-icon">&gt;_</div>
+        <h2>Linux 運用統制システム</h2>
+        <p class="desc">許可リスト方式による安全な Linux サーバー管理。55+ ページの WebUI でサービス制御・ファイアウォール・監査・承認ワークフローを提供。</p>
+        <div class="card-tags">
+          <span class="tag">Allowlist</span>
+          <span class="tag">55+ Pages</span>
+          <span class="tag">FastAPI</span>
+          <span class="tag">1275+ Tests</span>
+        </div>
+        <div class="card-footer">
+          <span class="card-status">v0.47.0 — Stable</span>
+          <span class="card-arrow">→</span>
+        </div>
+      </a>
+
+      <a class="card" data-theme="warm" href="Mirai-Knowledge-System-Sample/webui-sample/index.html">
+        <div class="card-icon">知</div>
+        <h2>建設ナレッジ管理システム</h2>
+        <p class="desc">建設・土木向け統合ナレッジプラットフォーム。施工計画・品質・安全・原価・出来形の知識と SOP を体系的に管理。和モダンデザイン。</p>
+        <div class="card-tags">
+          <span class="tag">ナレッジ</span>
+          <span class="tag">SOP</span>
+          <span class="tag">承認フロー</span>
+          <span class="tag">和モダン</span>
+        </div>
+        <div class="card-footer">
+          <span class="card-status">Phase B-7 — 70% Complete</span>
+          <span class="card-arrow">→</span>
+        </div>
+      </a>
+    </main>
+
+    <footer class="footer">
+      <p>Mirai IT Management WebUI Samples — MIT License — <a href="https://github.com/Kensan196948G/Mirai-IT-Management-WebUIsample">GitHub</a></p>
+    </footer>
+  </body>
+</html>

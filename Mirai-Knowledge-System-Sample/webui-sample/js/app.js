@@ -36,9 +36,9 @@ function renderLists() {
   const setting = settings.find((item) => item.name === state.selectedSetting) || settings[0];
   qs("#settingsDetail").innerHTML = `<div class="list-card"><strong>${esc(setting.name)}</strong><p>現在値: ${esc(setting.value)}</p><span class="pill">detail</span><p>${esc(setting.note)}</p></div>`;
 }
-function syncView() { const titles = { overview: "ダッシュボード", knowledge: "ナレッジ", search: "検索・推薦", approvals: "承認・配信", incidents: "事故・ヒヤリ", consultation: "専門家相談", audit: "監査・KPI", settings: "システム設定" }; qs("#pageTitle").textContent = titles[state.view]; qsa(".nav-item").forEach((n) => n.classList.toggle("is-active", n.dataset.view === state.view)); qsa(".view").forEach((v) => v.classList.toggle("is-active", v.id === `view-${state.view}`)); }
+function syncView() { const titles = { overview: "ダッシュボード", knowledge: "ナレッジ", search: "検索・推薦", approvals: "承認・配信", incidents: "事故・ヒヤリ", consultation: "専門家相談", audit: "監査・KPI", settings: "システム設定" }; qs("#pageTitle").textContent = titles[state.view]; qsa(".nav-item").forEach((n) => { const a = n.dataset.view === state.view; n.classList.toggle("is-active", a); a ? n.setAttribute("aria-current", "page") : n.removeAttribute("aria-current"); }); qsa(".view").forEach((v) => v.classList.toggle("is-active", v.id === `view-${state.view}`)); }
 function render() { renderHero(); renderStats(); renderOverview(); renderLists(); syncView(); }
-document.addEventListener("click", (e) => { const nav = e.target.closest("[data-view]"); if (nav) { state.view = nav.dataset.view; render(); } const setting = e.target.closest("[data-setting]"); if (setting) { state.selectedSetting = setting.dataset.setting; renderLists(); } });
-qs("#runSearchBtn").addEventListener("click", () => { state.query = qs("#searchTerm").value.trim(); state.view = "search"; render(); });
-qs("#notifyBtn").addEventListener("click", () => { notices = [`${new Date().toLocaleTimeString("ja-JP", { hour: "2-digit", minute: "2-digit" })} 配信通知を更新`, ...notices].slice(0, 4); render(); });
+document.addEventListener("click", (e) => { const nav = e.target.closest("[data-view]"); if (nav) { state.view = nav.dataset.view; render(); } const setting = e.target.closest("[data-setting]"); if (setting) { state.selectedSetting = setting.dataset.setting; showToast(setting.dataset.setting + " を選択", "success"); renderLists(); } });
+qs("#runSearchBtn").addEventListener("click", () => { state.query = qs("#searchTerm").value.trim(); showToast("検索を実行しました", "success"); state.view = "search"; render(); });
+qs("#notifyBtn").addEventListener("click", () => { notices = [`${new Date().toLocaleTimeString("ja-JP", { hour: "2-digit", minute: "2-digit" })} 配信通知を更新`, ...notices].slice(0, 4); showToast("配信通知を更新しました", "success"); render(); });
 render();

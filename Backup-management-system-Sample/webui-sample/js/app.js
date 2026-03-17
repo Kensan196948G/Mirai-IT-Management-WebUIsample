@@ -61,7 +61,7 @@ function renderLists() {
 function syncView() {
   const titles = { dashboard: "ダッシュボード", jobs: "ジョブ", media: "メディア", verification: "検証", reports: "レポート", alerts: "通知", integrations: "連携", settings: "システム設定" };
   qs("#pageTitle").textContent = titles[state.view];
-  qsa(".nav-item").forEach((item) => item.classList.toggle("is-active", item.dataset.view === state.view));
+  qsa(".nav-item").forEach((item) => { const a = item.dataset.view === state.view; item.classList.toggle("is-active", a); a ? item.setAttribute("aria-current", "page") : item.removeAttribute("aria-current"); });
   qsa(".view").forEach((view) => view.classList.toggle("is-active", view.id === `view-${state.view}`));
 }
 function render() { renderHero(); renderStats(); renderOverview(); renderLists(); syncView(); }
@@ -73,6 +73,7 @@ document.addEventListener("click", (event) => {
     const row = filteredJobs()[Number(job.dataset.job)];
     row.status = row.status === "警告" ? "正常" : "警告";
     alerts = [`${row.name} を ${row.status} に更新`, ...alerts].slice(0, 4);
+    showToast(row.name + " → " + row.status, row.status === "正常" ? "success" : "warning");
     render();
   }
   const setting = event.target.closest("[data-setting]");
@@ -81,5 +82,5 @@ document.addEventListener("click", (event) => {
     renderLists();
   }
 });
-qs("#simulateBtn").addEventListener("click", () => { alerts = [`${new Date().toLocaleTimeString("ja-JP", { hour: "2-digit", minute: "2-digit" })} 準拠チェックを再評価`, ...alerts].slice(0, 4); render(); });
+qs("#simulateBtn").addEventListener("click", () => { alerts = [`${new Date().toLocaleTimeString("ja-JP", { hour: "2-digit", minute: "2-digit" })} 準拠チェックを再評価`, ...alerts].slice(0, 4); showToast("準拠チェックを再評価しました", "success"); render(); });
 render();

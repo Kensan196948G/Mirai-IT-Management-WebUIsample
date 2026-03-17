@@ -1,0 +1,15 @@
+{
+  "name": "mirai-it-management-webuisamples",
+  "version": "1.0.0",
+  "private": true,
+  "description": "IT運用・管理系サンプルシステム WebUI コレクション",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Kensan196948G/Mirai-IT-Management-WebUIsample.git"
+  },
+  "scripts": {
+    "check": "node scripts/check-syntax.js",
+    "validate": "node scripts/validate-structure.js"
+  }
+}

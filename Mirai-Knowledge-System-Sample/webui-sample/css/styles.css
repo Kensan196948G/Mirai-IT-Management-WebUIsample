@@ -1,115 +1,239 @@
+@import "../../../shared/design-tokens.css";
+
+/* ============================================================
+   Mirai Knowledge System — 和モダン (Wa-Modern) Theme
+   Moss Green × Terracotta Orange × Warm Beige
+   ============================================================ */
+
 :root {
-  --bg: #ffffff;
-  --surface: #fcfdff;
-  --surface-2: #f3f8fd;
-  --line: #dbe7f4;
-  --text: #3a4d5f;
-  --muted: #7c8d9d;
-  --blue: #a7cff2;
-  --blue-strong: #78aede;
-  --blue-soft: #eff6fd;
-  --shadow: 0 18px 30px rgba(140, 174, 203, 0.12);
+  /* Primary: Moss Green */
+  --primary:        #5f8c5a;
+  --primary-light:  #7aa876;
+  --primary-soft:   #eef4ec;
+  --primary-strong: #4a7c59;
+
+  /* Accent: Terracotta Orange */
+  --accent-warning: #c2704e;
+  --accent-success: #5f8c5a;
+  --accent-danger:  #b5493a;
+  --accent-info:    #7a9e78;
+
+  /* Warm Beige surfaces */
+  --bg:         #faf6f0;
+  --surface:    #f5efe6;
+  --surface-2:  #ede5d8;
+  --surface-3:  #e2d8ca;
+
+  /* Warm lines */
+  --line:       #ddd5c8;
+  --line-light: #e8e0d4;
+
+  /* Text: Dark warm brown */
+  --text:       #3d3429;
+  --text-2:     #5c5042;
+  --muted:      #9a8e7f;
+
+  /* Warm-tone shadows */
+  --shadow-sm:  0 2px 8px rgba(100, 80, 50, 0.06);
+  --shadow-md:  0 8px 24px rgba(100, 80, 50, 0.09);
+  --shadow-lg:  0 18px 40px rgba(100, 80, 50, 0.12);
+  --shadow-xl:  0 24px 48px rgba(100, 80, 50, 0.16);
 }
 
-* { box-sizing: border-box; }
-body { margin: 0; font-family: "Murecho", sans-serif; background: #fff; color: var(--text); }
-button, select { font: inherit; }
-.app-shell { display: grid; grid-template-columns: 286px minmax(0, 1fr); min-height: 100vh; }
+/* ============================================================
+   Module-Specific Overrides
+   ============================================================ */
+
+/* --- Body --- */
+body {
+  background: var(--bg);
+}
+
+/* --- Sidebar: organic / natural feel --- */
 .sidebar {
-  padding: 24px 20px;
-  border-right: 1px solid var(--line);
   background:
-    linear-gradient(180deg, #ffffff 0%, #fafdff 100%),
-    repeating-linear-gradient(180deg, transparent 0 31px, rgba(167, 207, 242, 0.08) 31px 32px);
+    linear-gradient(180deg, #f7f2ea 0%, var(--surface) 100%),
+    repeating-linear-gradient(180deg, transparent 0 31px, rgba(95, 140, 90, 0.04) 31px 32px);
+  border-right-color: var(--line);
 }
-.brand, .topbar, .panel-head { display: flex; align-items: center; gap: 12px; }
-.brand { justify-content: flex-start; margin-bottom: 24px; }
+
+.brand {
+  border-bottom: 1px solid var(--line);
+}
+
+/* --- Brand icon: moss green gradient --- */
 .brand-icon {
-  width: 48px; height: 48px; border-radius: 18px; display: grid; place-items: center;
-  background: linear-gradient(180deg, #f6fbff 0%, #dfedf9 100%); color: var(--blue-strong); font-weight: 800;
+  background: linear-gradient(135deg, #e8f0e6 0%, #c5d9c2 100%);
+  color: var(--primary-strong);
 }
-.brand-title, .brand-sub, .eyebrow, .lead { margin: 0; }
-.brand-title { font-weight: 800; }
-.brand-sub, .eyebrow, .lead, .field span, .meta { color: var(--muted); }
-.nav { display: grid; gap: 8px; }
-.nav-item, .btn { border: 0; border-radius: 16px; cursor: pointer; }
-.nav-item { padding: 12px 14px; background: transparent; text-align: left; }
-.nav-item.is-active, .nav-item:hover { background: var(--blue-soft); color: var(--blue-strong); }
-.side-card, .hero, .panel, .hero-badge, .stat-card, .list-card {
-  border: 1px solid var(--line); border-radius: 24px; background: #fff; box-shadow: var(--shadow);
+
+.brand-icon:hover {
+  box-shadow: var(--shadow-md);
 }
-.side-card, .hero, .panel, .hero-badge, .stat-card, .list-card { padding: 16px; }
-.field { display: grid; gap: 8px; }
-.field select { padding: 12px; border: 1px solid var(--line); border-radius: 14px; background: #fff; }
-.main { padding: 24px 28px; }
-.topbar { justify-content: space-between; margin-bottom: 18px; }
-.btn { padding: 12px 18px; background: linear-gradient(180deg, #92c0ea 0%, #79b0df 100%); color: #fff; }
+
+/* --- Navigation: warm active states --- */
+.nav-item::before {
+  background: var(--primary);
+}
+
+.nav-item:hover {
+  background: var(--primary-soft);
+  color: var(--primary-strong);
+}
+
+.nav-item.is-active {
+  background: var(--primary-soft);
+  color: var(--primary-strong);
+}
+
+/* --- Hero: nature-inspired gradient --- */
 .hero {
-  display: grid; grid-template-columns: 1.25fr 0.75fr; gap: 16px; margin: 18px 0 20px;
   background:
-    linear-gradient(180deg, rgba(243, 248, 253, 0.9) 0%, rgba(255, 255, 255, 1) 66%);
+    radial-gradient(ellipse at top right, rgba(95, 140, 90, 0.10), transparent 55%),
+    radial-gradient(ellipse at bottom left, rgba(194, 112, 78, 0.06), transparent 50%),
+    linear-gradient(180deg, #f0ede6 0%, var(--bg) 65%);
+  border-color: var(--line);
 }
-.hero h2 { margin: 8px 0 10px; font-size: 2rem; line-height: 1.35; }
-.hero-badges, .stats-grid, .grid, .stack-list, .card-list { display: grid; gap: 16px; }
-.hero-badges { grid-template-columns: 1fr; }
+
+/* --- Hero badges --- */
 .hero-badge {
-  position: relative;
-  padding-left: 58px;
+  background: linear-gradient(180deg, #fffdf8 0%, var(--surface) 100%);
+  border-color: var(--line-light);
 }
-.hero-badge::before {
-  content: "✦";
-  position: absolute; left: 16px; top: 16px;
-  width: 30px; height: 30px; display: grid; place-items: center;
-  border-radius: 10px; background: var(--blue-soft); color: var(--blue-strong);
+
+.hero-badge:hover {
+  border-color: var(--primary-light);
 }
-.hero-badge strong, .stat-card strong { display: block; font-size: 1.8rem; margin: 8px 0 4px; }
-.stats-grid { grid-template-columns: repeat(4, minmax(0, 1fr)); }
+
+/* --- Stat cards: asymmetric 和 style corners --- */
 .stat-card {
-  background:
-    linear-gradient(180deg, #fff 0%, #fafdff 100%);
-  border-top-left-radius: 28px;
-  border-bottom-right-radius: 28px;
+  border-radius: 24px 12px 24px 8px;
+  background: linear-gradient(180deg, #fffdf8 0%, var(--surface) 100%);
+  border-color: var(--line);
 }
-.grid.two-col { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-.panel { padding: 20px; }
-.panel-head { justify-content: space-between; margin-bottom: 14px; }
+
+.stat-card::after {
+  background: var(--primary-soft);
+  opacity: 0.5;
+}
+
+/* --- Panels: understated elegance --- */
+.panel {
+  border-color: var(--line);
+  background: #fffdf9;
+}
+
+.panel-head {
+  padding-bottom: var(--space-3);
+  border-bottom: 1px solid var(--line-light);
+}
+
 .panel-head h3 {
-  letter-spacing: 0.02em;
+  letter-spacing: 0.04em;
+  position: relative;
 }
-.card-list.columns-3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
+
+/* --- List cards: warm hover --- */
 .list-card {
-  border-radius: 20px 20px 10px 20px;
-  background: linear-gradient(180deg, #ffffff 0%, #f7fbff 100%);
+  background: linear-gradient(180deg, #fffdf8 0%, var(--surface) 100%);
+  border-color: var(--line-light);
+  border-radius: 16px 16px 8px 16px;
 }
-.list-card strong { display: block; margin-bottom: 8px; }
+
+.list-card:hover {
+  border-color: var(--primary-light);
+  box-shadow: var(--shadow-md);
+  background: linear-gradient(180deg, #fdfaf4 0%, #f0eade 100%);
+}
+
+.list-card.is-selected {
+  border-color: var(--primary);
+  background: var(--primary-soft);
+}
+
+/* --- Pills: terracotta warning --- */
 .pill {
-  display: inline-flex; padding: 6px 10px; border-radius: 999px; background: var(--blue-soft);
-  color: var(--blue-strong); font-size: 0.8rem;
+  background: var(--primary-soft);
+  color: var(--primary-strong);
 }
-.mini-chart, .table-wrap { display: grid; gap: 12px; }
-.bar-row { display: grid; grid-template-columns: 120px 1fr 44px; gap: 10px; align-items: center; }
-.bar-track { height: 10px; border-radius: 999px; background: var(--surface-2); overflow: hidden; }
-.bar-track span { display: block; height: 100%; background: linear-gradient(90deg, var(--blue), var(--blue-strong)); }
-.data-table { width: 100%; border-collapse: collapse; font-size: 0.94rem; }
-.data-table th, .data-table td { padding: 10px 8px; border-bottom: 1px solid var(--line); text-align: left; }
-.data-table th { color: var(--muted); font-weight: 700; }
-.compose {
-  display: grid;
-  grid-template-columns: 1fr auto;
-  gap: 12px;
-  margin-bottom: 16px;
+
+.pill.success {
+  background: #e8f2e6;
+  color: #3d7a3a;
 }
-.compose input {
-  padding: 12px;
-  border-radius: 14px;
-  border: 1px solid var(--line);
-  background: #fff;
-  font: inherit;
+
+.pill.warning {
+  background: #f9ece4;
+  color: #a65d3f;
 }
-.view { display: none; }
-.view.is-active { display: block; }
-@media (max-width: 960px) {
-  .app-shell { grid-template-columns: 1fr; }
-  .hero, .stats-grid, .grid.two-col, .card-list.columns-3 { grid-template-columns: 1fr; }
-  .compose { grid-template-columns: 1fr; }
+
+.pill.danger {
+  background: #f6e4e2;
+  color: #9e3a2e;
+}
+
+/* --- Buttons: moss green --- */
+.btn.primary {
+  background: linear-gradient(135deg, var(--primary) 0%, var(--primary-strong) 100%);
+  box-shadow: 0 4px 12px rgba(74, 124, 89, 0.25);
+}
+
+.btn.primary:hover {
+  box-shadow: 0 6px 20px rgba(74, 124, 89, 0.35);
+}
+
+.btn.ghost {
+  background: var(--surface);
+  color: var(--text-2);
+}
+
+/* --- Bar charts: moss green gradient --- */
+.bar-track span {
+  background: linear-gradient(90deg, var(--primary-light), var(--primary-strong));
+}
+
+/* --- Data table hover --- */
+.data-table tbody tr:hover {
+  background: var(--surface);
+}
+
+/* --- Horizontal rule decoration: washi texture feel --- */
+hr, .divider {
+  border: none;
+  height: 1px;
+  background:
+    repeating-linear-gradient(
+      90deg,
+      var(--line) 0px,
+      var(--line) 4px,
+      transparent 4px,
+      transparent 8px
+    );
+  opacity: 0.7;
+  margin: var(--space-5) 0;
+}
+
+/* --- Form fields: warm focus ring --- */
+.field input:focus,
+.field select:focus,
+.field textarea:focus {
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px rgba(95, 140, 90, 0.15);
+}
+
+.compose textarea:focus,
+.compose input:focus {
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px rgba(95, 140, 90, 0.15);
+}
+
+/* --- Side card in sidebar --- */
+.side-card {
+  border-color: var(--line);
+  background: #fffdf9;
+}
+
+/* --- Links --- */
+a {
+  color: var(--primary-strong);
 }

@@ -11,10 +11,10 @@
   </head>
   <body>
     <div class="app-shell">
-      <aside class="sidebar">
+      <aside class="sidebar" role="complementary" aria-label="サイドバー">
         <div class="brand"><div class="brand-icon">K</div><div><p class="brand-title">建設土木ナレッジ</p><p class="brand-sub">Knowledge / SOP / Incident</p></div></div>
-        <nav class="nav">
-          <button class="nav-item is-active" data-view="overview">ダッシュボード</button>
+        <nav class="nav" role="navigation" aria-label="メインナビゲーション">
+          <button class="nav-item is-active" data-view="overview" aria-current="page">ダッシュボード</button>
           <button class="nav-item" data-view="knowledge">ナレッジ</button>
           <button class="nav-item" data-view="search">検索・推薦</button>
           <button class="nav-item" data-view="approvals">承認・配信</button>
@@ -24,10 +24,10 @@
           <button class="nav-item" data-view="settings">システム設定</button>
         </nav>
       </aside>
-      <main class="main">
+      <main class="main" role="main">
         <header class="topbar"><div><p class="eyebrow">README を元に再設計したデモ</p><h1 id="pageTitle">ダッシュボード</h1></div><button class="btn primary" id="notifyBtn">通知デモ</button></header>
         <section class="hero"><div><p class="eyebrow">Field Knowledge Hub</p><h2>現場知見、SOP、法令、事故情報を一元管理</h2><p class="lead">条件検索、承認配信、事故共有、専門家相談まで切り替えながら確認できるナレッジ UI です。</p></div><div class="hero-badges" id="heroBadges"></div></section>
-        <section class="view is-active" id="view-overview"><div class="stats-grid" id="statsGrid"></div><div class="grid two-col"><article class="panel"><div class="panel-head"><h3>重要通知</h3></div><div id="noticeList" class="stack-list"></div></article><article class="panel"><div class="panel-head"><h3>KPI</h3></div><div id="kpiList" class="stack-list"></div></article></div><div class="grid two-col"><article class="panel"><div class="panel-head"><h3>ナレッジ種別構成</h3></div><div id="knowledgeChart" class="mini-chart"></div></article><article class="panel"><div class="panel-head"><h3>更新一覧表</h3></div><div id="knowledgeTable" class="table-wrap"></div></article></div></section>
+        <section class="view is-active" id="view-overview"><div class="stats-grid" id="statsGrid" role="region" aria-label="統計情報"></div><div class="grid two-col"><article class="panel"><div class="panel-head"><h3>重要通知</h3></div><div id="noticeList" class="stack-list"></div></article><article class="panel"><div class="panel-head"><h3>KPI</h3></div><div id="kpiList" class="stack-list"></div></article></div><div class="grid two-col"><article class="panel"><div class="panel-head"><h3>ナレッジ種別構成</h3></div><div id="knowledgeChart" class="mini-chart"></div></article><article class="panel"><div class="panel-head"><h3>更新一覧表</h3></div><div id="knowledgeTable" class="table-wrap"></div></article></div></section>
         <section class="view" id="view-knowledge"><article class="panel"><div class="panel-head"><h3>ナレッジ一覧</h3></div><div id="knowledgeList" class="card-list columns-3"></div></article></section>
         <section class="view" id="view-search"><article class="panel"><div class="panel-head"><h3>検索・関連推薦</h3></div><div class="compose"><input id="searchTerm" type="search" placeholder="例: 切梁, 打設, 法令" /><button class="btn primary" id="runSearchBtn">検索</button></div><div id="searchResultList" class="card-list"></div></article></section>
         <section class="view" id="view-approvals"><article class="panel"><div class="panel-head"><h3>承認・配信フロー</h3></div><div id="approvalList" class="card-list"></div></article></section>
@@ -37,6 +37,7 @@
         <section class="view" id="view-settings"><div class="grid two-col"><article class="panel"><div class="panel-head"><h3>システム設定</h3></div><div id="settingsList" class="card-list"></div></article><article class="panel"><div class="panel-head"><h3>設定詳細</h3></div><div id="settingsDetail" class="card-list"></div></article></div></section>
       </main>
     </div>
+    <script src="../../shared/ui-utils.js"></script>
     <script src="./js/app.js"></script>
   </body>
 </html>

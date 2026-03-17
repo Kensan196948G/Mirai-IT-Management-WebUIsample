@@ -1,119 +1,128 @@
+@import "../../../shared/design-tokens.css";
+
+/* ============================================================
+   AI HelpDesk Theme — AI Purple
+   ============================================================ */
 :root {
-  --bg: #ffffff;
-  --surface: #fbfdff;
-  --surface-2: #f1f7fe;
-  --line: #d7e7f7;
-  --text: #33485d;
-  --muted: #778a9c;
-  --blue: #a5cff4;
-  --blue-strong: #76aee0;
-  --blue-soft: #edf6fe;
-  --shadow: 0 18px 30px rgba(138, 175, 208, 0.14);
+  /* Primary: AI purple spectrum */
+  --primary:        #8b5cf6;
+  --primary-light:  #a78bfa;
+  --primary-soft:   #f5f3ff;
+  --primary-strong: #7c3aed;
+
+  /* Surfaces: soft violet tints */
+  --bg:         #ffffff;
+  --surface:    #faf8ff;
+  --surface-2:  #f0ecfe;
+  --surface-3:  #e4ddf8;
+
+  /* Borders */
+  --line:       #e0d4f7;
+  --line-light: #ece5fb;
+
+  /* Text */
+  --text:       #1e1536;
+  --text-2:     #4a3d66;
+  --muted:      #8e82a6;
+
+  /* Shadows: purple-tinted */
+  --shadow-sm:  0 2px 8px rgba(124, 58, 237, 0.06);
+  --shadow-md:  0 8px 24px rgba(124, 58, 237, 0.09);
+  --shadow-lg:  0 18px 40px rgba(124, 58, 237, 0.13);
+  --shadow-xl:  0 24px 48px rgba(124, 58, 237, 0.17);
 }
 
-* { box-sizing: border-box; }
-body { margin: 0; font-family: "Murecho", sans-serif; background: #fff; color: var(--text); }
-button, select { font: inherit; }
-.app-shell { display: grid; grid-template-columns: 300px minmax(0, 1fr); min-height: 100vh; }
-.sidebar {
-  padding: 24px 20px;
-  border-right: 1px solid var(--line);
-  background: linear-gradient(180deg, #ffffff 0%, #f6fbff 100%);
-}
-.brand, .topbar, .panel-head { display: flex; align-items: center; gap: 12px; }
-.brand { justify-content: flex-start; margin-bottom: 24px; }
+/* ============================================================
+   Module-Specific Overrides
+   ============================================================ */
+
+/* --- Brand icon: radial purple gradient --- */
 .brand-icon {
-  width: 48px; height: 48px; border-radius: 18px; display: grid; place-items: center;
-  background: radial-gradient(circle at 30% 30%, #f9fcff, #dfefff); color: var(--blue-strong); font-weight: 800;
+  background: radial-gradient(circle at 30% 30%, #f5f0ff, #ddd0fc);
+  color: var(--primary-strong);
 }
-.brand-title, .brand-sub, .eyebrow, .lead { margin: 0; }
-.brand-title { font-weight: 800; }
-.brand-sub, .eyebrow, .lead, .field span, .meta { color: var(--muted); }
-.nav { display: grid; gap: 10px; }
-.nav-item, .btn { border: 0; border-radius: 16px; cursor: pointer; }
-.nav-item { padding: 13px 15px; background: transparent; text-align: left; }
-.nav-item.is-active, .nav-item:hover { background: var(--blue-soft); color: var(--blue-strong); }
-.side-card, .hero, .panel, .hero-badge, .stat-card, .list-card {
-  border: 1px solid var(--line); border-radius: 24px; background: #fff; box-shadow: var(--shadow);
-}
-.side-card, .hero, .panel, .hero-badge, .stat-card, .list-card { padding: 16px; }
-.field { display: grid; gap: 8px; }
-.field select { padding: 12px; border: 1px solid var(--line); border-radius: 14px; background: #fff; }
-.main { padding: 24px 28px; }
-.topbar { justify-content: space-between; margin-bottom: 18px; }
-.btn { padding: 12px 18px; background: linear-gradient(180deg, #8fbeeb 0%, #74adde 100%); color: #fff; }
+
+/* --- Hero: radial purple glow --- */
 .hero {
-  display: grid; grid-template-columns: 1.25fr 0.75fr; gap: 16px; margin: 18px 0 20px;
   background:
-    radial-gradient(circle at top right, rgba(165, 207, 244, 0.18), transparent 32%),
-    linear-gradient(180deg, rgba(241, 247, 254, 0.85) 0%, rgba(255, 255, 255, 1) 62%);
+    radial-gradient(ellipse at top right, rgba(139, 92, 246, 0.14), transparent 55%),
+    radial-gradient(circle at bottom left, rgba(124, 58, 237, 0.06), transparent 45%),
+    linear-gradient(180deg, var(--primary-soft) 0%, var(--bg) 60%);
 }
-.hero h2 { margin: 8px 0 10px; font-size: 1.95rem; line-height: 1.35; }
-.hero-badges, .stats-grid, .grid, .stack-list, .card-list { display: grid; gap: 16px; }
-.hero-badges { grid-template-columns: 1fr; }
+
+/* --- Buttons: purple gradient --- */
+.btn.primary {
+  background: linear-gradient(135deg, var(--primary) 0%, var(--primary-strong) 100%);
+  box-shadow: 0 4px 12px rgba(124, 58, 237, 0.28);
+}
+.btn.primary:hover {
+  box-shadow: 0 6px 20px rgba(124, 58, 237, 0.38);
+}
+
+/* --- Cards: 24px soft AI radius --- */
+.list-card,
+.stat-card,
+.panel,
 .hero-badge {
-  position: relative;
-  padding-left: 58px;
+  border-radius: 24px;
 }
-.hero-badge::before {
-  content: "◍";
-  position: absolute; left: 18px; top: 18px;
-  width: 28px; height: 28px; border-radius: 50%;
-  display: grid; place-items: center; background: var(--blue-soft); color: var(--blue-strong);
-}
-.stats-grid { grid-template-columns: repeat(4, minmax(0, 1fr)); }
-.stat-card {
-  border-radius: 26px;
-  background: linear-gradient(180deg, #fff 0%, #f7fbff 100%);
-}
-.stat-card strong, .hero-badge strong { display: block; font-size: 1.8rem; margin: 8px 0 4px; }
-.grid.two-col { grid-template-columns: 1.2fr 0.8fr; }
-.panel { padding: 20px; }
-.panel-head { justify-content: space-between; margin-bottom: 14px; }
-.card-list.columns-3 { grid-template-columns: repeat(3, minmax(0, 1fr)); }
-.list-card {
-  border-radius: 22px;
-  background: linear-gradient(180deg, #ffffff 0%, #f4f9ff 100%);
-}
+
+/* --- Chat bubble styling (odd = user, even = AI response) --- */
 #chatLog .list-card:nth-child(odd) {
   margin-right: 48px;
-  border-bottom-left-radius: 10px;
+  border-bottom-left-radius: 8px;
+  background: linear-gradient(180deg, #fff 0%, var(--surface) 100%);
 }
+
 #chatLog .list-card:nth-child(even) {
   margin-left: 48px;
-  border-bottom-right-radius: 10px;
-  background: linear-gradient(180deg, #eff7ff 0%, #ffffff 100%);
+  border-bottom-right-radius: 8px;
+  background: linear-gradient(180deg, var(--surface-2) 0%, #fff 100%);
+  border-color: var(--primary-light);
 }
-.pill {
-  display: inline-flex; padding: 6px 10px; border-radius: 999px; background: var(--blue-soft);
-  color: var(--blue-strong); font-size: 0.8rem;
-}
-.mini-chart, .table-wrap { display: grid; gap: 12px; }
-.bar-row { display: grid; grid-template-columns: 120px 1fr 44px; gap: 10px; align-items: center; }
-.bar-track { height: 10px; border-radius: 999px; background: var(--surface-2); overflow: hidden; }
-.bar-track span { display: block; height: 100%; background: linear-gradient(90deg, var(--blue), var(--blue-strong)); }
-.data-table { width: 100%; border-collapse: collapse; font-size: 0.94rem; }
-.data-table th, .data-table td { padding: 10px 8px; border-bottom: 1px solid var(--line); text-align: left; }
-.data-table th { color: var(--muted); font-weight: 700; }
-.compose {
-  display: grid;
-  gap: 12px;
-  margin-bottom: 16px;
-}
+
+/* --- Compose area: focused purple glow --- */
 .compose textarea {
   min-height: 112px;
-  padding: 12px;
-  border-radius: 14px;
+  border-radius: var(--radius-md);
   border: 1px solid var(--line);
-  background: #fff;
-  resize: vertical;
-  font: inherit;
+  background: var(--bg);
+  transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
 }
-.view { display: none; }
-.view.is-active { display: block; }
+
+.compose textarea:focus {
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.15);
+}
+
+/* --- Stat cards: purple decorative circle --- */
+.stat-card::after {
+  background: var(--primary-soft);
+}
+
+/* --- Bar chart fills: purple gradient --- */
+.bar-track span {
+  background: linear-gradient(90deg, var(--primary-light), var(--primary-strong));
+}
+
+/* --- Nav active indicator: purple --- */
+.nav-item.is-active,
+.nav-item:hover {
+  background: var(--primary-soft);
+  color: var(--primary-strong);
+}
+
+/* --- Pill default: purple-tinted --- */
+.pill {
+  background: var(--primary-soft);
+  color: var(--primary-strong);
+}
+
+/* --- Responsive: reset chat bubble margins --- */
 @media (max-width: 960px) {
-  .app-shell { grid-template-columns: 1fr; }
-  .hero, .stats-grid, .grid.two-col, .card-list.columns-3 { grid-template-columns: 1fr; }
   #chatLog .list-card:nth-child(odd),
-  #chatLog .list-card:nth-child(even) { margin-left: 0; margin-right: 0; }
+  #chatLog .list-card:nth-child(even) {
+    margin-left: 0;
+    margin-right: 0;
+  }
 }
